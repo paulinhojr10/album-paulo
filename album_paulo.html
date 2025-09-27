@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destaques Nostálgicos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+    }
+    .slideshow {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: #000;
+    }
+    .slide img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain; /* mantém qualidade original */
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+    .caption {
+      margin-top: 20px;
+      text-align: center;
+      max-width: 80%;
+    }
+    .caption h2 {
+      font-family: "Playfair Display", serif;
+      margin: 0 0 8px;
+      font-size: 1.8rem;
+      color: #ffd9b3;
+    }
+    .caption p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #f0f0f0;
+    }
+    .active {
+      opacity: 1;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="slideshow" id="slideshow"></div>
+
+  <script>
+    const photos = [
+      { src: "photos/foto1.png", title: "Abraço no galinheiro", tag: "infância", story: "Sorriso simples e um carinho inesperado — segurar o frango era como segurar um pedaço do quintal." },
+      { src: "photos/foto2.png", title: "Riso contra a parede", tag: "cotidiano", story: "Textura de concreto, selfie despretensiosa — às vezes a felicidade é só estar presente." },
+      { src: "photos/foto3.png", title: "Chocolate no rosto", tag: "brincadeira", story: "Mesa verde, boca suja de alegria — cada colher era uma festa." },
+      { src: "photos/foto4.png", title: "Noite na calçada", tag: "família", story: "Luz morna de poste, risos soltos — a rua era nosso salão de encontros." },
+      { src: "photos/foto5.png", title: "Beira da piscina", tag: "brincadeira", story: "Azul mosaico, sol alto — conversa boa com os pés na água." },
+      { src: "photos/foto6.png", title: "Cantinho preferido", tag: "cotidiano", story: "Entre a porta e a parede, um mundo inteiro — sorriso que cabe em qualquer espaço." },
+      { src: "photos/foto7.png", title: "Pose no gramado", tag: "infância", story: "Mãozinha na cintura, parede azul — brincar de ser grande e continuar pequeno." },
+      { src: "photos/foto8.png", title: "Moto parada, coração acelerado", tag: "brincadeira", story: "Motor frio, alegria quente — subir na moto era sentir vento sem sair do lugar." },
+      { src: "photos/foto9.png", title: "Tarde na cadeira amarela", tag: "cotidiano", story: "Camisa de desenho e olhar pro alto — um suspiro antes de voltar a brincar." },
+      { src: "photos/foto10.png", title: "Correria no quintal", tag: "brincadeira", story: "Pé no chão, parede azul — disputar quem chega primeiro só para rir no final." },
+      { src: "photos/foto11.png", title: "Descanso na grama", tag: "infância", story: "Polegar pra cima, risada sem pressa — a grama vira cama quando a tarde é boa." },
+      { src: "photos/foto12.png", title: "Sorriso ajoelhado", tag: "cotidiano", story: "Jeito simples, olhar direto — guardar momentos que parecem comuns e viram tesouro." },
+      { src: "photos/foto13.png", title: "Banho com risadas", tag: "família", story: "Sabão no cabelo e gargalhada ecoando — água leva a espuma, mas deixa a lembrança." },
+      { src: "photos/foto14.png", title: "Dois sorrisos, um instante", tag: "família", story: "Parede vermelha, olhos brilhando — caber juntos no mesmo frame é caber no mesmo coração." },
+      { src: "photos/foto15.png", title: "Milkshake e calmaria", tag: "cotidiano", story: "Canudo, mesinha simples — saborear devagar para o tempo passar mais devagar." },
+      { src: "photos/foto16.png", title: "Trio de abraços", tag: "família", story: "Listras que combinam, afeto que transborda — estar perto é a melhor paisagem." },
+      { src: "photos/foto17.png", title: "Depois do mergulho", tag: "brincadeira", story: "Cabelo molhado, toalha na cintura — riso leve que seca qualquer saudade." },
+      { src: "photos/foto18.png", title: "Selfie na noite morna", tag: "cotidiano", story: "Árvores ao fundo, céu escuro — iluminar o escuro com um sorriso." },
+      { src: "photos/foto19.png", title: "Manhã com o filhote", tag: "família", story: "Bordados e flores, patinhas pequenas — carinho que late baixinho." },
+      { src: "photos/foto20.png", title: "Pose no portão", tag: "família", story: "Mão na cintura, telhado de zinco — cotidiano vira palco quando o amor é o público." }
+    ];
+
+    const slideshow = document.getElementById("slideshow");
+
+    photos.forEach((item, index) => {
+      const slide = document.createElement("div");
+      slide.className = "slide";
+      if (index === 0) slide.classList.add("active");
+
+      const img = document.createElement("img");
+      img.src = item.src;
+      img.alt = item.title;
+
+      const caption = document.createElement("div");
+      caption.className = "caption";
+      caption.innerHTML = `<h2>${item.title}</h2><p>${item.story}</p>`;
+
+      slide.appendChild(img);
+      slide.appendChild(caption);
+      slideshow.appendChild(slide);
+    });
+
+    let current = 0;
+    const slides = document.querySelectorAll(".slide");
+
+    function showNext() {
+      slides[current].classList.remove("active");
+      current = (current + 1) % slides.length;
+      slides[current].classList.add("active");
+    }
+
+    setInterval(showNext, 4000); // troca a cada 4 segundos
+  </script>
+</body>
+</html>
